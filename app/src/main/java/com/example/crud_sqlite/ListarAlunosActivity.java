@@ -2,12 +2,15 @@ package com.example.crud_sqlite;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -17,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListarAlunosActivity extends AppCompatActivity {
-
     private ListView listView;
     private AlunoDAO dao;
     private List<Aluno> alunos;
@@ -34,6 +36,7 @@ public class ListarAlunosActivity extends AppCompatActivity {
         alunosFiltrados.addAll(alunos);
         ArrayAdapter<Aluno> adapter = new ArrayAdapter<Aluno>(this, android.R.layout.simple_list_item_1, alunos);
         listView.setAdapter(adapter);
+        registerForContextMenu(listView);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -55,6 +58,12 @@ public class ListarAlunosActivity extends AppCompatActivity {
         });
 
         return true;
+    }
+
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater i = getMenuInflater();
+        i.inflate(R.menu.menu_contexto, menu);
     }
 
     public void procuraAluno(String nome) {

@@ -3,7 +3,9 @@ package com.example.crud_sqlite;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -11,9 +13,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -74,6 +80,26 @@ public class ListarAlunosActivity extends AppCompatActivity {
             }
         }
         listView.invalidateViews();
+    }
+
+    public void excluir(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        final Aluno alunoExcluir = alunosFiltrados.get(menuInfo.position);
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Atenção")
+                .setMessage("Realmente deseja excluir o aluno?")
+                .setNegativeButton("NÃO", null)
+                .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        alunosFiltrados.remove(alunoExcluir);
+                        alunos.remove(alunoExcluir);
+                        dao.excluir(alunoExcluir);
+                        listView.invalidateViews();
+                    }
+                }).create();
+        dialog.show();
     }
 
     public void cadastrar(MenuItem item) {

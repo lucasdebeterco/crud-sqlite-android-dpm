@@ -25,6 +25,10 @@ public class AlunoDAO {
         return banco.insert("aluno", null, values);
     }
 
+    public void excluir(Aluno a) {
+        banco.delete("aluno", "id = ?", new String[] {a.getId().toString()});
+    }
+
     public List<Aluno> obterTodos() {
         List<Aluno> alunos = new ArrayList<>();
 
